@@ -17,17 +17,14 @@ class LatticeHDF5WriterG:
 
         if attrs['init_mat'] is None:
             attrs['init_mat'] = 'random'
-        else:	
-            self.f.create_dataset('Initial Matrix', data = attrs['init_mat'])
         #copy the common attributes
         for key in attrs:
-            if key != 'init_mat':
-                self.f.attrs[key] = attrs[key]
+            self.f.attrs[key] = attrs[key]
 
         self.f.attrs['c0'] = self.c0
         self.f.attrs['c1'] = self.c1
 
-
+        #self.f.create_dataset('Initial Matrix', data = init_mat)
         self.g = None
 
     #creates a new group to hold c0 scan
@@ -90,17 +87,45 @@ class LatticeHDF5ReaderG:
                     rho_vec = np.mean(np.array(c0_group[c1_idx]['measurements'])[-average:,:],0)
                 else:
                     rho_vec = np.array(c0_group[c1_idx]['measurements'])[-1,:]
+
+                rho_mat = np.array(c0_group[c1_idx]['measurements'])
+
+                #not mean variance
+                rho_1_var = np.var(rho_mat[:,0] + rho_mat[:,2]/2) 
+                rho_2_var = np.var(rho_mat[:,1] + rho_mat[:,3]/2) 
+
+                order_var = np.var(np.abs(rho_mat[:,0] - rho_mat[:,1] 
+                                    - rho_mat[:,2] + rho_mat[:,3])/2)
                 rho_1 = (rho_vec[0] + rho_vec[2])/2
                 rho_2 = (rho_vec[1] + rho_vec[3])/2
-                order = (rho_vec[0] - rho_vec[1] - rho_vec[2] + rho_vec[3])/2
+
+                #measurements.append((p_ha_even, p_a_even, p_ha_odd, 
+                #                    p_a_odd, com_idx, i))
+               
+                #Make order_ha (order_1) positive. Adjust the order_a (order_2) accordingly
+                order_ha = (rho_vec[0] - rho_vec[2])/2
+                if order_ha != 0:
+                    order_a = np.sign(order_ha)*(rho_vec[3] - rho_vec[1])/2  
+                else:
+                    order_a = 0 #Not able to enforce the sign constraint here, should really remove this point 
+                order_ha = np.abs(order_ha)
+                
+                order = np.abs((rho_vec[0] - rho_vec[1] - rho_vec[2] + rho_vec[3])/2) #Old order parameter, is the sum of new ones
+                com_idx = rho_vec[4]
+                #order_ha
+                #order_a = 
                 #(0,1)
 
-                data_list.append([c0, c1,rho_1, rho_2, np.abs(order),c0_idx, c1_idx]) 
+                data_list.append([c0, c1,rho_1, rho_2, np.abs(order),c0_idx, c1_idx,com_idx,order_ha,order_a,rho_1_var, rho_2_var,order_var]) 
         self.table = pd.DataFrame(data_list, 
-                            columns = [self.c0, self.c1, 'rho1', 'rho2','order','c0_idx','c1_idx'])
+                            columns = [self.c0, self.c1, 'rho1', 'rho2','order','c0_idx','c1_idx','com_idx',
+                                'order_ha','order_a','rho_1_var','rho_2_var','order_var'])
+        self.table['com_idx'] = self.table['com_idx'].fillna(0)
 
     def get_data(self, c0_idx, c1_idx):
-        ds = self.f[c0_idx][c1_idx]
+        c0_idx_s = self.c0 + str(c0_idx) 
+        c1_idx_s = self.c1 + str(c1_idx)
+        ds = self.f[c0_idx_s][c1_idx_s]
         spin = np.unpackbits(ds['spin_1'][...])*1\
                         + np.unpackbits(ds['spin_2'][...])*-1
         spin = np.reshape(spin, (self.attrs['Lx'], self.attrs['Ly']))

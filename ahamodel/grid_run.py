@@ -140,24 +140,24 @@ if __name__ == "__main__":
     
     #Define constant parameters here
     params = {} 
-    params['J'] = 1.31
-    params['K'] = 1.15
-    params['num_flips'] = 40000
+    params['J'] = 1.00
+    params['K'] = 0.0
+    params['num_flips'] = 20000
     params['Lx'] = 64
     params['Ly'] = 64
     params['a'] = 0
     params['pH'] = 7
-    params['pK'] = 6.3
+    params['pK'] = 7
     params['meas_ivl'] = 500
-    params['last_meas_num'] = 20480
+    params['last_meas_num'] = 1000
     params['last_meas_div'] = 20
     params['init_mat'] = checkerboard_ic(params['Lx'],params['Ly'])
     #params['init_mat'] = None
 
     #Define control arrays  
     ctrl_var = ['a','pH']
-    c0_array = np.arange(-4,4,0.08)
-    c1_array = np.linspace(2,12,99)#Make it odd to go through 7
+    c0_array = np.arange(-4,4,0.8)
+    c1_array = np.linspace(2,12,10)#Make it odd to go through 7
     
     #run this to pre-compile energy function
     single_test_n(200,50) 
