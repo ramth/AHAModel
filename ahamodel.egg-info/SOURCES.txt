@@ -1,0 +1,6 @@
+README.md
+setup.py
+ahamodel.egg-info/PKG-INFO
+ahamodel.egg-info/SOURCES.txt
+ahamodel.egg-info/dependency_links.txt
+ahamodel.egg-info/top_level.txt
