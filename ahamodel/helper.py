@@ -1,14 +1,25 @@
-#Energy functions
+## ---------------------------
+## Energy functions
+##
+## Authors: Ramprasath Rajagopal
+##
+## Email: rrajagop@bu.edu
+## ---------------------------
+
 import numba
 import numpy as np
 
 def pH_to_mu(a,pH,pK = 7):
-    mu_ha = a + np.log(1/(1+ 10**(pH - pK))) #Low pH more negative (HA) This is accounting for the werid sign and species flipping in the latter code
+    ''' computation of chemical potential, mu, for both chemical species
+    '''
+    mu_ha = a + np.log(1/(1+ 10**(pH - pK))) #Low pH more negative (HA) 
     mu_a = a + np.log((10**(pH-pK))/(1+ 10**(pH - pK))) #High pH more negative (A-)
     return(mu_ha,mu_a)
 
 @numba.njit(cache=True)
 def en_s(Sp,E,Lx,Ly,M,H):
+    ''' Faster routine for energy computation using numba
+    '''
     S = Sp+1 # shift to 0,1,2 from -1,0,1 to use as valid indices
     # HA Vac A- 
     # -1 0   1
@@ -54,6 +65,8 @@ def en_s(Sp,E,Lx,Ly,M,H):
                     + M[S[Lx-1,Ly-1],S[Lx-2,Ly-1]] + H[S[Lx-1,Ly-1]]
 
 def en_array(self,S): # energy of entire array, vectorized
+    ''' Equivalent numpy version for testing
+    '''
     SN = np.roll(S, 1, axis = 1)
     SS = np.roll(S, -1, axis = 1)
     SW = np.roll(S, 1, axis = 0)
@@ -67,7 +80,8 @@ def en_array(self,S): # energy of entire array, vectorized
     return(en)
 
 def complexation_index_f(spin):
-
+    ''' This index is defined in the text, used to quantify bond formation
+    '''
     nearest_neighbor = ((0,1),(0,-1),(1,0),(-1,0)) 
     complex_bonds = 0
     other_bonds = 0 
