@@ -11,12 +11,13 @@ applied to all of the sites on the sublattice simultaneously to utilize parallel
 Nearest neighbor coupling with an external site potential was utilized with the following
 coupling of energies between the sites,
 
-$$H_{i,j} = −\mu(S_{i,j} ) + \sum
-\limits_{<l,m>} \{Jh(S_{i,j} , S_{l,m}) + Kg(S_{i,j} , S_{l,m})\}$$
-$$ \mu_1 = a + \ln \frac {1}{ 1 + 10^{pH−pK}}$$
-$$ \mu_2 = a + \ln \frac{10^{pH−pK}{ 1 + 10^{pH−pK}} $$
-where the sum is over nearest neighbor sites (l, m). The function $h(S_i, S_j ) = −1$ when
-$(Si, Sj ) = (1, 2) or (2, 1)$ and zero otherwise, while the function $g(S_i,S_j ) = 1$ when $S_i = S_j = 2$
+$$H_{i,j} = −\mu(S_{i,j} ) + \sum\limits_{<l,m>} \{Jh(S_{i,j} , S_{l,m}) + Kg(S_{i,j} , S_{l,m})\}$$
+
+$$\mu_1 = a + \ln\frac{1}{ 1 + 10^{pH−pK}}$$
+
+$$\mu_2 = a + \ln\frac{10^{pH−pK}}{ 1 + 10^{pH−pK}} $$
+where the sum is over nearest neighbor sites $(l, m)$. The function $h(S_i, S_j ) = −1$ when
+$(Si, Sj ) = (1, 2)$ or $(2, 1)$ and zero otherwise, while the function $g(S_i,S_j ) = 1$ when $S_i = S_j = 2$
 and zero otherwise.The lattice model was simulated on a 64 by 64 site grid as a function of
 pK, a, pH, J, and K. A full ’checkerboard’ initial condition, one species fully occupying the
 even sublattice and the other species occupying the odd sublattice, was utilized to give fast
