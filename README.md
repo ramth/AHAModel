@@ -16,14 +16,15 @@ $$H_{i,j} = −\mu(S_{i,j} ) + \sum\limits_{<l,m>} \{Jh(S_{i,j} , S_{l,m}) + Kg(
 $$\mu_1 = a + \ln\frac{1}{ 1 + 10^{pH−pK}}$$
 
 $$\mu_2 = a + \ln\frac{10^{pH−pK}}{ 1 + 10^{pH−pK}} $$
+
 where the sum is over nearest neighbor sites $(l, m)$. The function $h(S_i, S_j ) = −1$ when
 $(Si, Sj ) = (1, 2)$ or $(2, 1)$ and zero otherwise, while the function $g(S_i,S_j ) = 1$ when $S_i = S_j = 2$
-and zero otherwise.The lattice model was simulated on a 64 by 64 site grid as a function of
+and zero otherwise. The lattice model was simulated on a 64 by 64 site grid as a function of
 pK, a, pH, J, and K. A full ’checkerboard’ initial condition, one species fully occupying the
 even sublattice and the other species occupying the odd sublattice, was utilized to give fast
 convergence in state points that had multiple metastable states. The thermalization time is
 chosen to be 20,000 flips per spin, and is followed by 1000 measurements, with 20 flips per
-spin between measurements. A binning analysis4 was done to characterize the correlations
+spin between measurements. A binning analysis was done to characterize the correlations
 and verify convergence. The typical standard error in n1 and n2 are < 0.01. Near the phase
 boundary, the correlation time diverges, but this only results in a slight uncertainty in the
 location of the phase boundary, without affecting our overall analysis. We estimate standard
